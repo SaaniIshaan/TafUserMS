@@ -37,11 +37,6 @@ public class UserServiceImpl implements UserService {
         return restTemplate.getForObject(dataStoreServiceUrl + "/users/" + userId, Users.class);
     }
 
- //   @Override
- //   public void updateUserDetails(Long userId, Users user) {
- //       restTemplate.put(dataStoreServiceUrl + "/users/" + userId, user);
-
- //   }
 
     @Override
     public Users updateUser(Users updatedUser) {
@@ -53,6 +48,11 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new RuntimeException("Failed to update user with ID:" + updatedUser.getUserId());
         }
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        restTemplate.delete(dataStoreServiceUrl + "/users" + userId);
     }
 
 

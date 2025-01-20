@@ -17,17 +17,13 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-
-    @Column(unique = true, nullable = false)
     private String username;
-
     private String email;
     private String phone;
-
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;
 
-    @PrePersist
+/*    @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
@@ -37,6 +33,6 @@ public class Users {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
-
+*/
 }
 

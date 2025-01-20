@@ -20,18 +20,17 @@ public class UserController {
 
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
-    @Autowired
-    private final RestTemplate restTemplate;
+  //  @Autowired
+  //  private final RestTemplate restTemplate;
 
     @Autowired
-    private final UserServiceImpl userServiceImpl;
+    private UserServiceImpl userServiceImpl;
 
     @Value("${datastore.ms.url}")
     String dataStoreServiceUrl;
 
-    public UserController(UserServiceImpl userServiceImpl, RestTemplate restTemplate) {
+    public UserController(UserServiceImpl userServiceImpl) {
         this.userServiceImpl = userServiceImpl;
-        this.restTemplate = restTemplate;
     }
 
     @GetMapping
@@ -41,25 +40,15 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Users> registerUser(@RequestBody Users user) {
-        String url = dataStoreServiceUrl + "/users";
-        Users createdUser = restTemplate.postForObject(url, user, Users.class);
-        return ResponseEntity.ok(createdUser);
+        return new ResponseEntity<>(userServiceImpl.registerANewUser(user),HttpStatus.CREATED);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<Users> getUser(@PathVariable Long userId) {
-        String url = dataStoreServiceUrl + "/users/" + userId;
-        ResponseEntity<Users> response = restTemplate.getForEntity(url, Users.class);
-        return ResponseEntity.ok(response.getBody());
+        Users user = userServiceImpl.getUserById(userId);
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
+
     }
-
-
-//    @PutMapping("/{userId}")
- //   public ResponseEntity<Users> updateUser(@PathVariable Long userId, @RequestBody Users user) {
- //       String url = dataStoreServiceUrl + "/users/" + userId;
- //       restTemplate.put(url, user);
-//       return ResponseEntity.noContent().build();
-//    }
 
     @PutMapping
     public ResponseEntity<Users> updateUser(@RequestBody Users updatedUser) {
@@ -69,6 +58,13 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+    }
+
+    @DeleteMapping("/userId")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+        userServiceImpl.deleteUser(userId);
+        String message = "User with ID" + userId + " has been successfully deleted";
+        return ResponseEntity.ok(message);
 
     }
 
