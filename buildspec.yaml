@@ -22,7 +22,7 @@ phases:
       - echo Building the application with Gradle...
       - ./gradlew build
       - echo Building the Docker image...
-      - IMAGE_REPO_NAME=boa-user-registry
+      - IMAGE_REPO_NAME=taf-user-registry
       - IMAGE_TAG=latest
       - echo img-repo-name $IMAGE_REPO_NAME
       - echo img-tag $IMAGE_TAG
@@ -37,11 +37,11 @@ phases:
       - echo Pushing the Docker image to AWS ECR...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       - echo Writing image definitions file...
-      - REPOSITORY_URI=381492308048.dkr.ecr.us-east-1.amazonaws.com/boa-user-registry
+      - REPOSITORY_URI=381492308048.dkr.ecr.us-east-1.amazonaws.com/taf-user-registry
       - printf '[{"name":"user-service","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - echo Writing image definitions file...
       - # add your container name
-      - DOCKER_CONTAINER_NAME=boa-user-registry
+      - DOCKER_CONTAINER_NAME=taf-user-container
       - printf '[{"name":"%s","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - echo Build process completed successfully.
 
