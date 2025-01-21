@@ -20,9 +20,6 @@ public class UserController {
 
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
-  //  @Autowired
-  //  private final RestTemplate restTemplate;
-
     @Autowired
     private UserServiceImpl userServiceImpl;
 
